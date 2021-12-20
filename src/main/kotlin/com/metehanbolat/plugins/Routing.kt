@@ -1,5 +1,6 @@
 package com.metehanbolat.plugins
 
+import com.metehanbolat.routes.getAllHeroes
 import com.metehanbolat.routes.root
 import io.ktor.routing.*
 import io.ktor.http.*
@@ -11,5 +12,6 @@ fun Application.configureRouting() {
 
     routing {
         root()
+        getAllHeroes()
     }
 }

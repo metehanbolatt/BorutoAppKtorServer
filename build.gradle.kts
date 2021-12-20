@@ -20,14 +20,14 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:1.6.7")
-    implementation("io.ktor:ktor-serialization:1.6.7")
-    implementation("io.ktor:ktor-server-netty:1.6.7")
-    implementation("ch.qos.logback:logback-classic:1.2.8")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-    testImplementation("io.ktor:ktor-server-tests:1.6.7")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.6.10")
+    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 
-    implementation("io.insert-koin:koin-ktor:3.1.4")
-    implementation("io.insert-koin:koin-logger-slf4j:3.1.4")
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 }
