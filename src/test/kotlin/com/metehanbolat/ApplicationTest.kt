@@ -54,4 +54,29 @@ class ApplicationTest {
             }
         }
     }
+
+    @Test
+    fun `access all heroes endpoint, query second page, assert correct information`(){
+        withTestApplication(moduleFunction = Application::module) {
+            handleRequest(HttpMethod.Get, "/boruto/heroes?page=2").apply {
+                assertEquals(
+                    expected = HttpStatusCode.OK,
+                    actual = response.status()
+                )
+                val expected = ApiResponse(
+                    success = true,
+                    message = "ok",
+                    prevPage = 1,
+                    nextPage = 3,
+                    heroes = heroRepository.page2,
+                )
+                val actual = Json.decodeFromString<ApiResponse>(response.content.toString())
+
+                assertEquals(
+                    expected = expected,
+                    actual = actual
+                )
+            }
+        }
+    }
 }
