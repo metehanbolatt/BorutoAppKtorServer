@@ -1,24 +1,23 @@
 package com.metehanbolat
 
-import io.ktor.routing.*
 import io.ktor.http.*
-import io.ktor.serialization.*
-import io.ktor.features.*
-import org.slf4j.event.*
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
 import kotlin.test.*
 import io.ktor.server.testing.*
-import com.metehanbolat.plugins.*
 
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ configureRouting() }) {
+        withTestApplication(moduleFunction = Application::module) {
             handleRequest(HttpMethod.Get, "/").apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("Hello World!", response.content)
+                assertEquals(
+                    expected = HttpStatusCode.OK,
+                    actual = response.status()
+                )
+                assertEquals(
+                    expected = "Welcome to Boruto API!",
+                    actual = response.content
+                )
             }
         }
     }
