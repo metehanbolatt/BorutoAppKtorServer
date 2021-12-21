@@ -2,6 +2,8 @@ package com.metehanbolat
 
 import com.metehanbolat.models.ApiResponse
 import com.metehanbolat.repository.HeroRepository
+import com.metehanbolat.repository.NEXT_PAGE_KEY
+import com.metehanbolat.repository.PREV_PAGE_KEY
 import io.ktor.http.*
 import io.ktor.application.*
 import kotlin.test.*
@@ -28,6 +30,58 @@ class ApplicationTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun `access all heroes endpoint, query all pages, assert correct information`(){
+        withTestApplication(moduleFunction = Application::module) {
+            val pages = 1..5
+            val heroes = listOf(
+                heroRepository.page1,
+                heroRepository.page2,
+                heroRepository.page3,
+                heroRepository.page4,
+                heroRepository.page5
+            )
+            pages.forEach { page ->
+                handleRequest(HttpMethod.Get, "/boruto/heroes?page=$page").apply {
+                    assertEquals(
+                        expected = HttpStatusCode.OK,
+                        actual = response.status()
+                    )
+                    val expected = ApiResponse(
+                        success = true,
+                        message = "ok",
+                        prevPage = calculatePage(page = page)["prevPage"],
+                        nextPage = calculatePage(page = page)["nextPage"],
+                        heroes = heroes[page - 1]
+                    )
+                    val actual = Json.decodeFromString<ApiResponse>(response.content.toString())
+                    assertEquals(
+                        expected = expected,
+                        actual = actual
+                    )
+                }
+            }
+        }
+    }
+
+    private fun calculatePage(page: Int): Map<String, Int?> {
+        var prevPage: Int? = page
+        var nextPage: Int? = page
+        if (page in 1..4){
+            nextPage = nextPage?.plus(1)
+        }
+        if (page in 2..5){
+            prevPage = prevPage?.minus(1)
+        }
+        if (page == 1){
+            prevPage = null
+        }
+        if (page == 5){
+            nextPage = null
+        }
+        return mapOf(PREV_PAGE_KEY to prevPage, NEXT_PAGE_KEY to nextPage)
     }
 
     @Test
